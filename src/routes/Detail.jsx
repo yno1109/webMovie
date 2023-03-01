@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Info from "../components/Info";
 import Loading from "../components/Loading";
@@ -22,9 +23,12 @@ const Detail = () => {
   }, []);
 
   return (
-    <div className="h-screen flex flex-col px-16">
+    <div className="h-screen flex flex-col">
       <Header />
-      {isLoading ? <Loading /> : <Info item={movie} />}
+      <section className="flex flex-1 justify-center items-center p-36 mt-36 bg-slate-500">
+        {isLoading ? <Loading /> : <Info item={movie} />}
+      </section>
+      <Footer />
     </div>
   );
 };

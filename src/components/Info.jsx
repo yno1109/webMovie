@@ -2,11 +2,11 @@ const Info = ({ item }) => {
   return (
     <div className="flex justify-evenly items-center p-16 rounded-lg bg-gray-300 shadow-lg shadow-gray-900">
       <img
-        className="w-[370px] rounded-sm mr-16 shadow-lg shadow-gray-600"
+        className="h-[555px] rounded-sm mr-16 shadow-lg shadow-gray-600"
         src={item.large_cover_image}
         alt={item.title}
       />
-      <div className="flex flex-col justify-start h-full p-16 rounded-lg bg-gray-400 shadow-lg shadow-gray-700">
+      <div className="h-[555px] flex flex-col justify-start p-16 rounded-lg bg-gray-400 shadow-lg shadow-gray-700">
         <h1 className="text-6xl mb-16">{item.title_long}</h1>
         <div>
           <div className="my-2">

@@ -1,4 +1,7 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import Movie from "../components/Movie";
@@ -23,21 +26,40 @@ const Home = () => {
   }, []);
 
   return (
-    // TODO: h1 메뉴 꾸미고 상단에 메뉴 만들고 하단에 footer 만들어서 그 안에는 트위터, 인스타그램 넣어두기
-    // TODO: 로그인 폼 만들기
+    // TODO: 로그인 폼 기능 구현
     // TODO: 원하는 영화 검색과 장르나 최신영화 검색할 수 있게 input 만들기
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col relative">
       <Header />
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <div className="grid grid-cols-3 gap-y-28">
-          {movies.map((movie) => (
-            <Movie key={movie.id} item={movie} />
-          ))}
-        </div>
-      )}
-      <footer>footer</footer>
+      <section className="flex flex-1 justify-center items-center p-36 mt-36 bg-slate-500">
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <div>
+            <form>
+              <div className="flex items-center mb-36 w-96 rounded-full px-4 py-2 bg-white">
+                <input
+                  type="text"
+                  placeholder="Write a Title!"
+                  className="outline-none w-full text-slate-300"
+                />
+                <button>
+                  <FontAwesomeIcon
+                    icon={faMagnifyingGlass}
+                    size="xl"
+                    className="outline-none"
+                  />
+                </button>
+              </div>
+            </form>
+            <div className="grid grid-cols-3 gap-x-56 gap-y-28">
+              {movies.map((movie) => (
+                <Movie key={movie.id} item={movie} />
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+      <Footer />
     </div>
   );
 };
