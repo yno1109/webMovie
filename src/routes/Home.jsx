@@ -26,31 +26,39 @@ const Home = () => {
   }, []);
 
   return (
-    // TODO: 로그인 폼 기능 구현
+    // TODO: 우측 상단에 설정 옵션 만들고 마이페이지 만들기
     // TODO: 원하는 영화 검색과 장르나 최신영화 검색할 수 있게 input 만들기
     <div className="h-screen flex flex-col relative">
       <Header />
-      <section className="flex flex-1 justify-center items-center p-36 mt-36 bg-slate-500">
+      <section className="flex flex-1 justify-center items-center p-36 mt-24 bg-slate-500">
         {isLoading ? (
           <Loading />
         ) : (
           <div>
-            <form>
-              <div className="flex items-center mb-36 w-96 rounded-full px-4 py-2 bg-white">
-                <input
-                  type="text"
-                  placeholder="Write a Title!"
-                  className="outline-none w-full text-slate-300"
-                />
-                <button>
-                  <FontAwesomeIcon
-                    icon={faMagnifyingGlass}
-                    size="xl"
-                    className="outline-none"
+            <div className="flex justify-around items-center mb-24 bg-slate-300 px-8 py-10 rounded-2xl shadow-md shadow-gray-900">
+              <form>
+                <div className="flex items-center w-96 rounded-full px-4 py-2 bg-white">
+                  <input
+                    type="text"
+                    placeholder="Write a Title!"
+                    className="outline-none w-full text-slate-300"
                   />
-                </button>
-              </div>
-            </form>
+                  <button>
+                    <FontAwesomeIcon
+                      icon={faMagnifyingGlass}
+                      size="xl"
+                      className="outline-none"
+                    />
+                  </button>
+                </div>
+              </form>
+              <select className="h-full rounded-full px-2 py-1 text-slate-500 outline-none">
+                <option>최신순</option>
+                <option>오래된순</option>
+                <option>가나다순</option>
+                <option>평점높은순</option>
+              </select>
+            </div>
             <div className="grid grid-cols-3 gap-x-56 gap-y-28">
               {movies.map((movie) => (
                 <Movie key={movie.id} item={movie} />

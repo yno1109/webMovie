@@ -13,7 +13,7 @@ const Header = () => {
       <Menu path={"/ranking"} menu={"랭킹"} />
       <Menu path={"/upcomingfilm"} menu={"상영/예정작"} />
       <Menu path={"/contents"} menu={"콘텐츠"} />
-      <Menu path={"/login"} menu={"로그인"} />
+      <Menu path={"/signin"} menu={"로그인"} />
     </header>
   );
 };
