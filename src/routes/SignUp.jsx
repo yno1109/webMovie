@@ -1,26 +1,66 @@
 import axios from "axios";
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import SignUpInput from "../components/SignUpInput";
 
-// TODO: 회원가입 중복 방지, 이메일 & 비밀번호 형식 검사, 빈 문자열 검사, 잘못 입력했을 시 입력 칸 비우기
 const SignUp = () => {
-  const inputName = useRef("");
-  const inputEmail = useRef("");
-  const inputPassword = useRef("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggined, setIsLoggined] = useState(false);
+  const navigate = useNavigate();
+
+  const checkEmail = (email) => {
+    let reg =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+    return reg.test(email);
+  };
+
+  const checkPassword = (password) => {
+    let reg = /^[A-Za-z0-9]{6,12}$/;
+    return reg.test(password);
+  };
+
+  const checkInput = () => {
+    if (name.trim() === "") {
+      throw new Error("이름을 입력해주세요.");
+    } else if (email.trim() === "") {
+      throw new Error("이메일을 입력해주세요.");
+    } else if (password.trim() === "") {
+      throw new Error("비밀번호를 입력해주세요.");
+    } else if (!checkEmail(email)) {
+      throw new Error("이메일 형식에 맞게 입력해주세요.");
+    } else if (!checkPassword(password)) {
+      throw new Error(
+        "최소 6자리, 하나 이상의 문자와 숫자를 포함하여 비밀번호를 입력해주세요."
+      );
+    }
+  };
 
   const clickSignUp = async () => {
     try {
+      checkInput();
+      const response = await axios.get(
+        `http://localhost:3001/profile?email=${email}`
+      );
+      if (response?.data[0]?.email === email) {
+        throw new Error("이미 존재하는 회원 정보입니다.");
+      }
+
       await axios.post("http://localhost:3001/profile", {
         name: name,
         email: email,
         password: password,
       });
+
+      setIsLoggined(true);
+      navigate("/", { state: { isLoggined: isLoggined } });
     } catch (error) {
+      setName("");
+      setEmail("");
+      setPassword("");
       alert(error);
     }
   };
@@ -29,56 +69,15 @@ const SignUp = () => {
     <div className="h-screen flex flex-col">
       <Header />
       <section className="flex flex-1 justify-center items-center p-36 mt-36 bg-slate-500">
-        <div className="flex flex-col items-center px-40 py-20 bg-white rounded-md shadow-lg shadow-gray-900">
-          <h2 className="m-1.5 text-3xl text-slate-900 font-bold mb-10 select-none">
-            회원가입
-          </h2>
-          <input
-            id="nameInput"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            ref={inputName}
-            type="text"
-            placeholder="이름"
-            className="outline-0 border-b-2 border-slate-900 bg-inherit m-4 pl-1 pb-2 w-full"
-          />
-          <input
-            id="emailInput"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            ref={inputEmail}
-            type="email"
-            placeholder="이메일"
-            className="outline-0 border-b-2 border-slate-900 bg-inherit m-4 pl-1 pb-2 w-full"
-          />
-          <input
-            id="pwInput"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            ref={inputPassword}
-            type="password"
-            placeholder="비밀번호"
-            className="outline-0 border-b-2 border-slate-900 bg-inherit m-4 pl-1 pb-2 w-full"
-          />
-          <button
-            className="bg-slate-400 text-slate-900 font-bold rounded-md w-full py-2 m-4 shadow-sm shadow-gray-700"
-            onClick={clickSignUp}
-          >
-            회원가입
-          </button>
-          <hr className="bg-slate-900 w-full h-0.5 border-0 m-10" />
-          <div className="flex justify-center">
-            <div className="mx-6">
-              <Link to="/findemail">이메일 찾기</Link>
-            </div>
-            <div className="mx-6">
-              <Link to="/findpassword">비밀번호 찾기</Link>
-            </div>
-            <div className="mx-6">
-              <Link to="/signin">로그인</Link>
-            </div>
-          </div>
-        </div>
+        <SignUpInput
+          name={name}
+          email={email}
+          password={password}
+          setName={setName}
+          setEmail={setEmail}
+          setPassword={setPassword}
+          clickSignUp={clickSignUp}
+        />
       </section>
       <Footer />
     </div>
